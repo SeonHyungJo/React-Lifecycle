@@ -4,21 +4,24 @@ class Card extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      ...props,
       list: []
     }
-    console.log(this.state)
-    console.log("cons")
+    console.log("constructor_Card")
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log("getDerivedStateFromProps")
-    console.log(props)
-    console.log(state)
-    if (!props.add) {
-      return { list: [] }
+    console.log("getDerivedStateFromProps_Card")
+    if (props.add) {
+      return { add: props.add }
     } else {
-      return null
+      return { add: props.add, list: [] }
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log("shouldComponentUpdate_Card")
+    return true
   }
 
   addRow = () => {
@@ -28,7 +31,7 @@ class Card extends React.Component {
   }
 
   render() {
-    console.log("children render")
+    console.log("render_Card")
     return (
       <div>
         {this.state.list.map(val =>
@@ -36,11 +39,29 @@ class Card extends React.Component {
             {val}
           </div>
         )}
-        <button disabled={!this.props.add} onClick={this.addRow}>
+        <button disabled={!this.state.add} onClick={this.addRow}>
           Generate Number
         </button>
       </div>
     )
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log("getSnapshotBeforeUpdate_Card")
+    return "snapshot TEST_Card"
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount_Card")
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log("componentDidUpdate_Card")
+    console.log(snapshot)
+  }
+
+  componentWillUnmount() {
+    console.log("componentWillUnmount_Card")
   }
 }
 
